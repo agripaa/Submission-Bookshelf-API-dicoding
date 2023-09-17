@@ -12,8 +12,8 @@ module.exports = {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify({
-              status: 'success',
-              data: { books }
+                status: 'success',
+                data: { books }
             }));
         } catch (error) {
             res.statusCode = 500;
@@ -196,7 +196,6 @@ module.exports = {
             if (!book) {
                 res.statusCode = 404;
                 res.setHeader('Content-Type', 'application/json');
-
                 res.end(JSON.stringify({ status: 'fail', message: 'Buku gagal dihapus. Id tidak ditemukan' }));
                 return;
             }
@@ -226,6 +225,7 @@ module.exports = {
                     status: 'fail',
                     message: 'Buku tidak ditemukan, query anda salah'
                 }));
+                return;
             }
         
             const books = await Book.findAll({
@@ -241,6 +241,7 @@ module.exports = {
                     status: 'fail',
                     message: 'Data buku tidak ditemukan'
                 }));
+                return;
             }
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
@@ -265,6 +266,7 @@ module.exports = {
                     status: 'fail',
                     message: 'Buku tidak ditemukan, query anda salah'
                 }));
+                return;
             }
         
             const books = await Book.findAll({
@@ -280,6 +282,7 @@ module.exports = {
                     status: 'fail',
                     message: 'Data buku tidak ditemukan'
                 }));
+                return;
             }
         
             res.statusCode = 200;
@@ -308,7 +311,7 @@ module.exports = {
                 return;
             }
     
-            const books = await Book.findAll({
+            const book = await Book.findOne({
                 where: {
                     name: {
                         [Op.like]: `%${name}%`
@@ -316,21 +319,22 @@ module.exports = {
                 },
                 attributes: ['id', 'name', 'publisher']
             });
-
-            if (!books) {
+    
+            if (!book) {
                 res.statusCode = 404;
                 res.setHeader('Content-Type', 'application/json');
                 res.end(JSON.stringify({
                     status: 'fail',
                     message: 'Data buku tidak ditemukan'
                 }));
+                return;
             }
     
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify({
                 status: 'success',
-                data: { books }
+                data: { book }
             }));
         } catch (error) {
             res.statusCode = 500;
